@@ -5,7 +5,7 @@ if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
 
-if($_SESSION['pengguna']['is_admin'] == '1'){
+if($_SESSION['user']['is_admin'] == '1'){
     header('Location:login.php');
 }
 
@@ -21,13 +21,13 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
     <h1 align="center">Tabel Periode Kerja</h1>
 	<div class="list" align="center">
 		<table align="center">
-		   
+
 			<thead>
 				<tr class="prop">
 					<th valign="top" class="name">No</th>
 					<th valign="top" class="name">Nama</th>
 					<th class="name">&nbsp;</th>
-				</tr> 
+				</tr>
 			</thead>
 			 <tbody border='1' align="center">
 				<?php $i= 1; foreach($hasil as $baris):?>
@@ -40,8 +40,8 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 			</tbody>
 		</table>
 	</div>
-	
+
 	<div class="body">
 		<span class="menuButton"><a href="pembobotan_add.php" class="create">Pembobotan</a></span>
-	</div> 
+	</div>
 </div>

@@ -5,7 +5,7 @@ if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
 
-if($_SESSION['pengguna']['is_admin'] == '1'){
+if($_SESSION['user']['is_admin'] == '1'){
     header('Location:login.php');
 }
 
@@ -23,7 +23,7 @@ if(isset($_POST['submit'])) {
 	$sth->execute(array($_POST['nama_periode']));
 	$periodeId = $db->lastInsertId();
 	foreach($_POST['bobot'] as $kriteria_id => $kriteria){
-		foreach($kriteria as $pembanding_id => $nilai){ 
+		foreach($kriteria as $pembanding_id => $nilai){
 			$sth = $db->prepare("INSERT INTO bobot(
                                         periode_id, kriteria_id, kriteria_pembanding_id, nilai)
                                     values(?, ?, ?, ?)");
@@ -53,7 +53,7 @@ if(isset($_POST['submit'])) {
 				<td valign="top" class="value">
 					<input type="text" name="nama_periode"/>
 				</td>
-			</tr>	
+			</tr>
 		</table>
 		<br/>
 		<br/>
@@ -96,12 +96,12 @@ s					<?php endforeach ?>
 			</table>
 			<br/>
 			<?php foreach($listKriteria as $parent):?>
-			<?php 
+			<?php
 			$sth = $db->prepare("SELECT * FROM kriteria WHERE parent_id = :id");
 			$sth->execute(array('id' => $parent['id']));
 			$listChild = $sth->fetchAll(PDO::FETCH_ASSOC);
 			?>
-			
+
 			<?php if (count($listChild)>0):?>
 
 			<div class="body" align="center">

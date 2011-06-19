@@ -8,12 +8,12 @@ if(!isset($_SESSION['user'])){
 $sth = $db->prepare("SELECT * FROM  periode");
 $sth->execute();
 $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
-	
-if($_SESSION['pengguna']['is_admin'] == '0'){
+
+if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
-	
-	
+
+
 if(isset($_POST['submit'])) {
     $sth = $db->prepare("INSERT INTO pegawai(
                                         nama,
@@ -42,7 +42,7 @@ if(isset($_POST['submit'])) {
         <div class="dialog" align="center">
             <table align="center">
                 <tbody align="center">
-                
+
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="nama">Nama</label>
@@ -51,7 +51,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="nama" value="" id="nama" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="instansi">NIP</label>
@@ -60,7 +60,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="nip" value="" id="instansi" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="keperluan">Jabatan</label>
@@ -68,7 +68,7 @@ if(isset($_POST['submit'])) {
                         <td valign="top" class="value ">
                             <input type="text" name="jabatan" value="" id="keperluan" /></textarea>
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="name">Golongan</label>
@@ -86,7 +86,7 @@ if(isset($_POST['submit'])) {
 								<option>IV C</option>
                             </select>
                         </td>
-                    </tr> 
+                    </tr>
 					<tr class="prop">
                         <td valign="top" class="name">
                             <label for="instansi">Pendidikan Formal</label>
@@ -101,7 +101,7 @@ if(isset($_POST['submit'])) {
                         <td valign="top" class="value ">
                             <input type="text" name="pend_struktural" value="" id="instansi" />
                         </td>
-                    </tr> 
+                    </tr>
 					<tr>
 					<td valign="top" class="name">
                             <label for="Periode">Periode</label>
@@ -113,8 +113,8 @@ if(isset($_POST['submit'])) {
                                 <?php endforeach?>
                             </select>
                         </td>
-					</tr>	
-                    </tr> 
+					</tr>
+                    </tr>
                 </tbody>
             </table>
         </div>

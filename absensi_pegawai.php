@@ -5,14 +5,14 @@ if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
 
-if($_SESSION['pengguna']['is_admin'] == '0'){
+if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
 
 $sth = $db->prepare("SELECT * FROM  periode");
 $sth->execute();
 $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
-	
+
 if(isset($_POST['submit'])) {
     $sth = $db->prepare("INSERT INTO presensi(
                                         pegawai_id,
@@ -41,7 +41,7 @@ if(isset($_POST['submit'])) {
         <div class="dialog" align="center">
             <table align="center">
                 <tbody align="center">
-                
+
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="nama">NIP</label>
@@ -57,7 +57,7 @@ if(isset($_POST['submit'])) {
 						<td valign="top" class="value ">
                             <input type="text" name="jumlah_hadir" value="" id="instansi" />
                         </td>
-                    </tr>    
+                    </tr>
 					<tr class="prop">
                         <td valign="top" class="name">
                             <label for="keperluan">Jumlah Sakit</label>
@@ -65,7 +65,7 @@ if(isset($_POST['submit'])) {
 						<td valign="top" class="value ">
                             <input type="text" name="jumlah_sakit" value="" id="instansi" />
                         </td>
-                    </tr> 
+                    </tr>
 					<tr class="prop">
                         <td valign="top" class="name">
                             <label for="keperluan">Jumlah Izin</label>
@@ -73,7 +73,7 @@ if(isset($_POST['submit'])) {
 						<td valign="top" class="value ">
                             <input type="text" name="jumlah_izin" value="" id="instansi" />
                         </td>
-                    </tr> 
+                    </tr>
 					<tr class="prop">
                         <td valign="top" class="name">
                             <label for="keperluan">Jumlah Tanpa Keterangan</label>
@@ -81,7 +81,7 @@ if(isset($_POST['submit'])) {
 						<td valign="top" class="value ">
                             <input type="text" name="jumlah_tanpa_keterangan" value="" id="instansi" />
                         </td>
-                    </tr> 
+                    </tr>
 					<tr>
 					<td valign="top" class="name">
                             <label for="Periode">Periode</label>

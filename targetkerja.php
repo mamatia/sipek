@@ -11,11 +11,11 @@ $sth = $db->prepare("SELECT * FROM  periode");
 $sth->execute();
 $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-$nama_bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+$nama_bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
 
-if($_SESSION['pengguna']['is_admin'] == '0'){
+if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
 
@@ -50,7 +50,7 @@ if(isset($_POST['submit'])) {
         <div class="dialog" align="center">
             <table align="center">
                 <tbody align="center">
-                
+
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="nama">Nama:</label>
@@ -59,7 +59,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="nama" value="" id="nama" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="instansi">Target Anggaran:</label>
@@ -68,7 +68,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="target_anggaran" value="" id="instansi" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="keperluan">Riil Anggaran:</label>
@@ -76,14 +76,14 @@ if(isset($_POST['submit'])) {
 						<td valign="top" class="value ">
                             <input type="text" name="riil_anggaran" value="" id="instansi" />
                         </td>
-                    </tr>    
+                    </tr>
 					<tr>
 					<tr class="prop">
 						<td valign="top" class="name">
 							<label for="tanggal_mulai">Tanggal Mulai:</label>
 						</td>
 					<td valign="top" class="name">
-						
+
 						<select name="hari">
 							<?php for($h = 1; $h <= 31; $h++):?>
 								<?php $selected = ($h == date('d'))?'selected="selected"':''?>
@@ -111,7 +111,7 @@ if(isset($_POST['submit'])) {
 							<?php endfor ?>
 						</select>
 					</tr>
-					
+
 					<tr>
 					<tr class="prop">
 						<td valign="top" class="name">
@@ -146,14 +146,14 @@ if(isset($_POST['submit'])) {
 						</select>
 					</td>
 					</tr>
-					
+
 					<tr>
 					<tr class="prop">
 						<td valign="top" class="name">
 							<label for="tanggal_mulai">Riil Tanggal Selesai :</label>
 						</td>
 					<td valign="top" class="name">
-						
+
 						<select name="hari">
 							<?php for($h = 1; $h <= 31; $h++):?>
 								<?php $selected = ($h == date('d'))?'selected="selected"':''?>

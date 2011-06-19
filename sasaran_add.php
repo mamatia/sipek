@@ -5,14 +5,14 @@ if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
 
-if($_SESSION['pengguna']['is_admin'] == '1'){
+if($_SESSION['user']['is_admin'] == '1'){
     header('Location:login.php');
 }
 
 $sth = $db->prepare("SELECT * FROM  periode");
 $sth->execute();
 $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
-	
+
 /*if(isset($_POST['submit'])) {
   $sth = $db->prepare("INSERT INTO presensi(
                                         pegawai_id,
@@ -54,7 +54,7 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
                                 <?php endforeach?>
                             </select>
                         </td>
-					</tr>	
+					</tr>
 					</tbody>
 </table>
 &nbsp;
@@ -63,7 +63,7 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 			<tr>
 			<td colspan="5"><h3>Perspektif Finansial</h3></td>
 			</tr>
-		
+
 			<tr>
 				<td width="">No.</td>
 				<td><u>Sasaran Strategis</u></td>
@@ -75,11 +75,11 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 				<td>Jumlah Uang masuk</td>
 				<td colspan="2">Rp.<input type="text" value="" name=""></td>
 			</tr>
-			
+
 		<tr>
 		<td><td>
 		</tr>
-		
+
 			<tr rowspan="2">
 				<td rowspan="2">2.</td>
 				<td rowspan="2">Penggunaan Anggaran</td>
@@ -91,11 +91,11 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 				<td>Cash in</td>
 				<td>Rp.<input type="text" value="" name=""></td>
 			</tr>
-			
+
 			<tr>
 			<td></td>
 			</td>
-			
+
 			<tr rowspan="2">
 				<td rowspan="2">3.</td>
 				<td rowspan="2">Efektivitas Anggaran</td>
@@ -109,19 +109,19 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 			</tr>
 			<tr><td></td></tr>
 			</table>
-			
+
 			<br><br>
 		<table border="0">
 			<tr>
 			<td colspan="5"><h3>Perspektif Pelanggan</h3></td>
 			</tr>
-		
+
 			<tr>
 				<td><u>No.</u></td>
 				<td><u>Sasaran Strategis</u></td>
 				<td><u>Formulasi</u></td>
 				<td colspan="2"><u>Input</u></td>
-		
+
 			<tr rowspan="2">
 				<td rowspan="2">1.</td>
 				<td rowspan="2">Kepuasan Pelayanan Publik</td>
@@ -157,12 +157,12 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 				<td>Total Jumlah pegawai</td>
 				<td><input type="text" value="" name=""></td>
 			</tr>
-			
-			
+
+
 		<tr>
 		<td><td>
 		</tr>
-		
+
 			<tr rowspan="2">
 				<td rowspan="2">2.</td>
 				<td rowspan="2">Peningkatan Kualitas Pegawai</td>
@@ -174,11 +174,11 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 				<td>Target Kerja</td>
 				<td><input type="text" value="" name=""></td>
 			</tr>
-			
+
 			<tr>
 			<td></td>
 			</td>
-			
+
 			<tr rowspan="2">
 				<td rowspan="2">3.</td>
 				<td rowspan="2">Kualitas Sarana Prasarana</td>
@@ -193,13 +193,13 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 			<tr><td></td></tr>
 		</table>
 		<br><br>
-		
-		
+
+
 		<table border="0">
 			<tr>
 			<td colspan="5"><h3>Perspektif Pembelajaran dan Pertumbuhan</h3></td>
 			</tr>
-		
+
 			<tr>
 				<td width="">No.</td>
 				<td><u>Sasaran Strategis</u></td>
@@ -211,11 +211,11 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 				<td>Jumlah Penugasan Keluar</td>
 				<td colspan="2"><input type="text" value="" name=""></td>
 			</tr>
-			
+
 		<tr>
 		<td><td>
 		</tr>
-		
+
 			<tr rowspan="2">
 				<td rowspan="2">2.</td>
 				<td rowspan="2">Efektivitas Komunikasi</td>
@@ -227,17 +227,16 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 				<td>Jumlah Target Pertemuan Rapat</td>
 				<td><input type="text" value="" name=""></td>
 			</tr>
-			
+
 			<tr>
 			<td></td>
 			</td>
 			</table>
-			
+
 			<br><br>
 		<div class="buttons" align="center">
             <span class="button"><input class="save" name="submit" type="submit" value="Create" /></span>
         </div>
 </form>
-	
-	
-	
+
+

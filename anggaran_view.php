@@ -5,7 +5,7 @@ if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
 
-if($_SESSION['pengguna']['is_admin'] == '1'){
+if($_SESSION['user']['is_admin'] == '1'){
     header('Location:login.php');
 }
 
@@ -24,14 +24,14 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 &nbsp;
        <div class="list" align="center">
             <table align="center">
-               
+
                 <thead>
                     <tr class="prop">
                         <th valign="top" class="name">No</th>
 						<th valign="top" class="name">Sumber</th>
 						<th valign="top" class="name">Jumlah</th>
 						<th valign="top" class="name">Tanggal Terima</th>
-                    </tr> 
+                    </tr>
 				</thead>
 				<tbody align="center" border="1">
 					<?php $i= 1; foreach($hasil as $baris):?>
@@ -48,4 +48,4 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 &nbsp;
 		<div class="body">
 			<span class="menuButton"><a href="anggaran.php" class="create">Tambah Data</a></span>
-		</div>        
+		</div>
