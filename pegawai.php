@@ -21,10 +21,10 @@ if(isset($_POST['submit'])) {
                                         jabatan,
                                         golongan,
                                         pend_formal,
-										pend_struktural,
+										status,
 										periode_id)
                                     values(?, ?, ?, ?, ?, ?, ?)");
-    $sth->execute(array($_POST['nama'],$_POST['nip'],$_POST['jabatan'],$_POST['golongan'],$_POST['pend_formal'],$_POST['pend_struktural'],$_POST['periode_id']));
+    $sth->execute(array($_POST['nama'],$_POST['nip'],$_POST['jabatan'],$_POST['golongan'],$_POST['pend_formal'],$_POST['status'],$_POST['periode_id']));
 	$saved=true;
 }
 ?>
@@ -96,10 +96,13 @@ if(isset($_POST['submit'])) {
                         </td>
 						<tr class="prop">
                         <td valign="top" class="name">
-                            <label for="instansi">Pendidikan Struktural</label>
+                            <label for="instansi">Status</label>
                         </td>
                         <td valign="top" class="value ">
-                            <input type="text" name="pend_struktural" value="" id="instansi" />
+                            <select name="status">
+								<option>aktif</option>
+								<option>tidak aktif</option>
+							</select>
                         </td>
                     </tr>
 					<tr>

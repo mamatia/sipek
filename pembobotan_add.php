@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'connect.php';
+
 if(!isset($_SESSION['user'])){
 	header('Location:login.php');
 }
@@ -9,36 +10,130 @@ if($_SESSION['user']['is_admin'] == '1'){
 	header('Location:login.php');
 }
 
-$sth = $db->prepare("SELECT * FROM kriteria WHERE parent_id is NULL");
+$sth = $db->prepare('SELECT * FROM kriteria WHERE parent_id is NULL');
 $sth->execute();
 $listKriteria = $sth->fetchAll (PDO::FETCH_ASSOC);
 
-$sth = $db->prepare("SELECT id,parent_id FROM kriteria");
+$sth = $db->prepare('SELECT id,parent_id FROM kriteria');
 $sth->execute();
 $listAllKriteria = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['submit'])) {
 	$db->beginTransaction();
-	$sth = $db->prepare("INSERT INTO periode(nama) VALUES(?)");
+	$sth = $db->prepare('INSERT INTO periode(nama) VALUES(?)');
 	$sth->execute(array($_POST['nama_periode']));
 	$periodeId = $db->lastInsertId();
 	foreach($_POST['bobot'] as $kriteria_id => $kriteria){
 		foreach($kriteria as $pembanding_id => $nilai){
-			$sth = $db->prepare("INSERT INTO bobot(
+			$sth = $db->prepare('INSERT INTO bobot(
 										periode_id, kriteria_id, kriteria_pembanding_id, nilai)
-									values(?, ?, ?, ?)");
+									values(?, ?, ?, ?)');
 			$sth->execute(array($periodeId, $kriteria_id, $pembanding_id, $nilai));
 		}
 	}
 
 	foreach($_POST['bobot_kriteria'] as $kriteria_id => $nilai){
-		$sth = $db->prepare("INSERT INTO bobot_kriteria(
+		$sth = $db->prepare('INSERT INTO bobot_kriteria(
 										periode_id, kriteria_id, nilai)
-									values(?, ?, ?)");
+									values(?, ?, ?)');
 		$sth->execute(array($periodeId, $kriteria_id, $nilai));
 	}
 
-	$saved=true;
+	foreach($listAllKriteria as $kriteria){
+
+		$nilai = null;
+		switch($kriteria['id']) {
+			case 5: // anggaran masuk
+				$sth = $db->prepare('SELECT SUM(jumlah) FROM anggaran WHERE periode_id = ?');
+				$sth->execute(array($periodeId));
+				$nilai = $sth->fetchColumn();
+				break;
+			case 7: // efektifitas anggaran
+				$sth = $db->prepare('SELECT SUM(riil_anggaran) / SUM(target_anggaran)
+						FROM program_kerja WHERE periode_id = ?');
+				$sth->execute(array($periodeId));
+				$nilai = $sth->fetchColumn();
+				break;
+			case 2: // pelanggan
+				$sth = $db->prepare('SELECT COUNT(*)
+						FROM program_kerja
+						WHERE periode_id = ?
+						AND jenis_pelayanan_id IN (1,2)
+						AND selesai = 1');
+				$sth->execute(array($periodeId));
+				$jumlah_selesai = $sth->fetchColumn();
+				$sth = $db->prepare('SELECT COUNT(*)
+						FROM program_kerja
+						WHERE periode_id = ?
+						AND jenis_pelayanan_id IN (1,2)');
+				$sth->execute(array($periodeId));
+				$jumlah_semua = $sth->fetchColumn();
+				$nilai = (float) $jumlah_selesai / (float) $jumlah_semua;
+				break;
+			case 8: // kepuasan kerja pegawai
+				$sth = $db->prepare('SELECT AVG(jumlah_hadir)
+						FROM presensi WHERE periode_id = ?');
+				$sth->execute(array($periodeId));
+				$avg_hadir = $sth->fetchColumn();
+				$sth = $db->prepare('SELECT jumlah_hadir + jumlah_sakit + jumlah_izin + jumlah_tanpa_keterangan
+						FROM presensi
+						WHERE periode_id = ?');
+				$sth->execute(array($periodeId));
+				$total_hadir = $sth->fetchColumn();
+				$nilai = (float) $avg_hadir / (float) $total_hadir;
+				break;
+			case 9: // 	Peningkatan Kualitas Pegawai
+				$sth = $db->prepare('SELECT COUNT(*)
+						FROM program_kerja
+						WHERE periode_id = ?
+						AND selesai = 1');
+				$sth->execute(array($periodeId));
+				$jumlah_selesai = $sth->fetchColumn();
+				$sth = $db->prepare('SELECT COUNT(*)
+						FROM program_kerja
+						WHERE periode_id = ?');
+				$sth->execute(array($periodeId));
+				$jumlah_semua = $sth->fetchColumn();
+				$nilai = (float) $jumlah_selesai / (float) $jumlah_semua;
+				break;
+			case 10: //	Kualitas sarana prasarana
+				$sth = $db->prepare('SELECT SUM(jumlah)
+						FROM inventaris
+						WHERE periode_id = ? AND kondisi != ? ');
+				$sth->execute(array($periodeId,'Buruk'));
+				$jumlah_baik = $sth->fetchColumn();
+				$sth = $db->prepare('SELECT SUM(jumlah)
+						FROM inventaris
+						WHERE periode_id = ?');
+				$sth->execute(array($periodeId));
+				$jumlah_semua = $sth->fetchColumn();
+				$nilai = (float) $jumlah_baik / (float) $jumlah_semua;
+				break;
+			case 11: //	Kualitas SDM
+				$sth = $db->prepare('SELECT COUNT(*) FROM penugasan WHERE periode_id = ?');
+				$sth->execute(array($periodeId));
+				$nilai = $sth->fetchColumn();
+				break;
+			case 12: // Efektivitas Komunikasi
+				$sth = $db->prepare('SELECT COUNT(*)
+						FROM program_kerja
+						WHERE periode_id = ?
+						AND selesai = 1');
+				$sth->execute(array($periodeId));
+				$jumlah_selesai = $sth->fetchColumn();
+				$sth = $db->prepare('SELECT COUNT(*)
+						FROM pertemuan
+						WHERE periode_id = ?');
+				$sth->execute(array($periodeId));
+				$jumlah_pertemuan = $sth->fetchColumn();
+				$nilai = (float) $jumlah_selesai / (float) $jumlah_pertemuan;
+				break;
+		}
+		$sth = $db->prepare('INSERT INTO kti(periode_id, kriteria_id, nilai) values(?, ?, ?)');
+		$sth->execute(array($periodeId, $kriteria['id'], $nilai));
+	}
+
+	$saved = true;
 	$db->commit();
 }
 ?>
@@ -114,7 +209,7 @@ if(isset($_POST['submit'])) {
 			<br/>
 			<?php foreach($listKriteria as $parent):?>
 			<?php
-			$sth = $db->prepare("SELECT * FROM kriteria WHERE parent_id = :id");
+			$sth = $db->prepare('SELECT * FROM kriteria WHERE parent_id = :id');
 			$sth->execute(array('id' => $parent['id']));
 			$listChild = $sth->fetchAll(PDO::FETCH_ASSOC);
 			?>
@@ -159,8 +254,8 @@ if(isset($_POST['submit'])) {
 						</td>
 						<?php endforeach ?>
 						<td id="jumlah_<?php echo $baris['id']?>" class="jumlah_<?php echo $baris['id']?>"><?php echo count($listChild) ?></td>
-						<td id="bobot_kriteria_display_<?php echo $baris['id']?>" class="bobot_kriteria_<?php echo $baris['id']?>"> <?php echo round(1 / count($listChild),2)?></td>
-						<input  id="bobot_kriteria_<?php echo $baris['id']?>" type="hidden" name="bobot_kriteria[<?php echo $baris['id']?>]" value="<?php echo round(1 / count($listChild),2)?>"/>
+						<td id="bobot_kriteria_display_<?php echo $baris['id']?>" class="bobot_kriteria_<?php echo $baris['id']?>"> <?php echo round(1/count($listKriteria) * 1 / count($listChild),2)?></td>
+						<input  id="bobot_kriteria_<?php echo $baris['id']?>" type="hidden" name="bobot_kriteria[<?php echo $baris['id']?>]" value="<?php echo round(1/count($listKriteria) * 1 / count($listChild),2)?>"/>
 					</tr>
 					<?php endforeach ?>
 					<tr>
@@ -195,8 +290,13 @@ var hitung_jumlah = function(kriteria_id, parent_id) {
 		new_jumlah = new_jumlah.round(2);
 		document.id('total_' + parent_id).set('html', (function(){
 			var total = document.id('total_' + parent_id).get('html').toFloat() - old_jumlah + new_jumlah;
-			document.id('bobot_kriteria_' + kriteria_id).set('value', (new_jumlah / total).round(2));
-			document.id('bobot_kriteria_display_' + kriteria_id).set('html', (new_jumlah / total).round(2));
+			bobot_parent = 1;
+			if (parent_id != 0) {
+				var bobot_parent = document.id('bobot_kriteria_' + parent_id).get('value').toFloat();
+			}
+
+			document.id('bobot_kriteria_' + kriteria_id).set('value', ((new_jumlah / total) * bobot_parent).round(2));
+			document.id('bobot_kriteria_display_' + kriteria_id).set('html', ((new_jumlah / total) * bobot_parent).round(2));
 			return total.round(2);
 		})());
 		return new_jumlah;

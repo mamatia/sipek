@@ -34,7 +34,7 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 				<tr>
 					<td><?php $i; echo $i++ ?></td>
 					<td><?php echo $baris['nama']?></td>
-					<td><a href="pembobotan_view.php?periode_id=<?php echo $baris['id']?>">lihat</a></td>
+					<td><a href="pembobotan_view.php?periode_id=<?php echo $baris['id']?>">lihat laporan kinerja</a></td>
 				</tr>
 				<?php endforeach ?>
 			</tbody>
