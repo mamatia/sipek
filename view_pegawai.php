@@ -42,7 +42,7 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 						<td><?php echo $baris['nama']?></td>
 						<td><?php echo $baris['jabatan']?></td>
 						<td><?php echo $baris['golongan']?></td>
-						<td><?php echo $baris['pendidikan_formal']?></td>
+						<td><?php echo $baris['pend_formal']?></td>
 						<td><?php echo $baris['status']?></td>
 					</tr>
 					<?php endforeach ?>

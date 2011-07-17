@@ -47,5 +47,5 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
 &nbsp;
 		<div class="body">
-			<span class="menuButton"><a href="anggaran.php" class="create">Tambah Data</a></span>
+			<span class="menuButton"><a href="inventaris.php" class="create">Tambah Data</a></span>
 		</div>

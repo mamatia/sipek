@@ -19,7 +19,7 @@ if(isset($_GET['submit'])) {
 }
 
 
-$query = "select * from inventaris";
+$query = "select * from anggaran";
 
 $statement = $db->prepare($query);
 $statement->execute();
@@ -29,7 +29,7 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 <?php include 'header.php'?>
 &nbsp;
 <div class="body" align="center">
-    <h1 align="center">Tabel Barang</h1>
+    <h1 align="center">Tabel Anggaran</h1>
 &nbsp;
 <form method="get">
 <table>

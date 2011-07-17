@@ -27,7 +27,7 @@ if(!isset($_SESSION)){
 				<span class="menuButton"><a href="view_pegawai.php" class="list">Data Pegawai</a></span>
 				<span class="menuButton"><a href="anggaran_view.php" class="list">Data Anggaran</a></span>
 				<span class="menuButton"><a href="inventaris_view.php" class="list">Data Inventaris</a></span>
-				<span class="menuButton"><a href="targetkerja.php" class="list">Data Program Kerja</a></span>
+				<span class="menuButton"><a href="program_kerja_view.php" class="list">Data Program Kerja</a></span>
 				<span class="menuButton"><a href="absensi_pegawai.php" class="list">Data Absensi Pegawai</a></span>
 			<?php else:?>
 				<span class="menuButton"><a href="periode.php" class="list">Periode</a></span>

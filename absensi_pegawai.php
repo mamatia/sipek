@@ -9,11 +9,16 @@ if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
 
+
+
 $sth = $db->prepare("SELECT * FROM  periode");
 $sth->execute();
 $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['submit'])) {
+	$sth = $db->prepare("SELECT * FROM  pegawai where nip = ?");
+	$sth->execute(array($_POST['nip']));
+	$pegawai = $sth->fetch(PDO::FETCH_ASSOC);
     $sth = $db->prepare("INSERT INTO presensi(
                                         pegawai_id,
                                         jumlah_hadir,
@@ -22,7 +27,7 @@ if(isset($_POST['submit'])) {
 										jumlah_tanpa_keterangan,
 										periode_id)
                                     values(?, ?, ?, ?, ?, ?)");
-    $sth->execute(array($_POST['pegawai_id'],$_POST['jumlah_hadir'],$_POST['jumlah_sakit'],$_POST['jumlah_izin'],$_POST['jumlah_tanpa_keterangan'],$_POST['periode_id']));
+    $sth->execute(array($pegawai['id'],$_POST['jumlah_hadir'],$_POST['jumlah_sakit'],$_POST['jumlah_izin'],$_POST['jumlah_tanpa_keterangan'],$_POST['periode_id']));
 	$saved=true;
 }
 
@@ -47,7 +52,7 @@ if(isset($_POST['submit'])) {
                             <label for="nama">NIP</label>
                         </td>
                         <td valign="top" class="value ">
-                            <input type="text" name="pegawai_id" value="" id="nama" />
+                            <input type="text" name="nip" value="" id="nama" />
                         </td>
 						</tr>
                     <tr class="prop">

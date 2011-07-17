@@ -14,7 +14,11 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 $nama_bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
-
+$sth = $db->prepare("SELECT * FROM  jenis_pelayanan");
+$sth->execute();
+$listjenispelayanan = $sth->fetchAll(PDO::FETCH_ASSOC);
+		
+		
 if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
@@ -28,9 +32,10 @@ if(isset($_POST['submit'])) {
 										tanggal_mulai,
 										tanggal_target_selesai,
 										riil_tanggal_selesai,
+										jenis_pelayanan_id,
                                         periode_id)
-                                    values(?, ?, ?, ?, ?, ?, ?)");
-    $sth->execute(array($_POST['nama'],$_POST['target_anggaran'],$_POST['riil_anggaran'],$date,$date,$date,$_POST['periode_id']));
+                                    values(?, ?, ?, ?, ?, ?, ?, ?)");
+    $sth->execute(array($_POST['nama'],$_POST['target_anggaran'],$_POST['riil_anggaran'],$date,$date,$date,$_POST['jenis_pelayanan_id'],$_POST['periode_id']));
 	$saved=true;
 }
 
@@ -57,9 +62,20 @@ if(isset($_POST['submit'])) {
                         </td>
                         <td valign="top" class="value ">
                             <input type="text" name="nama" value="" id="nama" />
-
                         </td>
                     </tr>
+					<tr>
+					<td valign="top" class="name">
+                            <label for="Periode">Jenis Pelayanan</label>
+                        </td>
+					<td valign="top" class="value">
+                            <select name="jenis_pelayanan_id">
+                                <?php foreach($listjenispelayanan as $jenispelayanan):?>
+                                <option value="<?php echo $jenispelayanan['id'] ?>"><?php echo $jenispelayanan['nama']?></option>
+                                <?php endforeach?>
+                            </select>
+                        </td>
+					</tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="instansi">Target Anggaran:</label>

@@ -9,8 +9,7 @@ if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
 
-
-$query = "select * from program_kerja";
+$query = "select pk.*, jp.nama jp_nama from program_kerja pk left join jenis_pelayanan jp on pk.jenis_pelayanan_id = jp.id";
 
 $statement = $db->prepare($query);
 $statement->execute();
@@ -20,13 +19,13 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 <?php include 'header.php'?>
 &nbsp;
 <div class="body" align="center">
-    <h1 align="center">Tabel Barang</h1>
+    <h1 align="center">Tabel Program Kerja</h1>
 &nbsp;
        <div class="list" align="center">
             <table align="center">
 
                 <thead>
-                    <tr class="prop">
+                    <tr>
                         <th valign="top" class="name">No</th>
 						<th valign="top" class="name">Nama</th>
 						<th valign="top" class="name">Jenis Pelayanan</th>
@@ -42,11 +41,11 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <tr>
 						<td><?php $i; echo $i++ ?></td>
 						<td><?php echo $baris['nama']?></td>
-						<td><?php echo $baris['jenis_pelayanan']?></td>
+						<td><?php echo $baris['jp_nama']?></td>
 						<td><?php echo $baris['target_anggaran']?></td>
 						<td><?php echo $baris['riil_anggaran']?></td>
 						<td><?php echo $baris['tanggal_mulai']?></td>
-						<td><?php echo $baris['target_tanggal_selesai']?></td>
+						<td><?php echo $baris['tanggal_target_selesai']?></td>
 						<td><?php echo $baris['riil_tanggal_selesai']?></td>
 					</tr>
 					<?php endforeach ?>
@@ -55,5 +54,5 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
 &nbsp;
 		<div class="body">
-			<span class="menuButton"><a href="anggaran.php" class="create">Tambah Data</a></span>
+			<span class="menuButton"><a href="targetkerja.php" class="create">Tambah Data</a></span>
 		</div>
