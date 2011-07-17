@@ -13,7 +13,7 @@ if($_SESSION['user']['is_admin'] == '1'){
 $query = "select * from periode";
 $statement = $db->prepare($query);
 $statement->execute();
-$hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
+$listPeriode = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <?php include 'header.php'?>
@@ -30,11 +30,17 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 				</tr>
 			</thead>
 			 <tbody border='1' align="center">
-				<?php $i= 1; foreach($hasil as $baris):?>
+				<?php $i= 1; foreach($listPeriode as $periode):?>
 				<tr>
 					<td><?php $i; echo $i++ ?></td>
-					<td><?php echo $baris['nama']?></td>
-					<td><a href="pembobotan_view.php?periode_id=<?php echo $baris['id']?>">lihat laporan kinerja</a></td>
+					<td><?php echo $periode['nama']?></td>
+					<td>
+						<?php if($periode['terisi_bobot']):?>
+							<a href="pembobotan_view.php?periode_id=<?php echo $periode['id']?>">lihat laporan kinerja</a>
+						<?php else:?>
+							<span class="menuButton"><a href="pembobotan_add.php?periode_id=<?php echo $periode['id'] ?>" class="create">Isi pembobot</a></span>
+						<?php endif ?>
+					</td>
 				</tr>
 				<?php endforeach ?>
 			</tbody>

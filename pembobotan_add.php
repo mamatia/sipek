@@ -10,6 +10,11 @@ if($_SESSION['user']['is_admin'] == '1'){
 	header('Location:login.php');
 }
 
+$sth = $db->prepare('SELECT * FROM periode WHERE id = ?');
+$sth->execute(array($_GET['periode_id']));
+$periode = $sth->fetch(PDO::FETCH_ASSOC);
+$periodeId = $periode['id'];
+
 $sth = $db->prepare('SELECT * FROM kriteria WHERE parent_id is NULL');
 $sth->execute();
 $listKriteria = $sth->fetchAll (PDO::FETCH_ASSOC);
@@ -20,9 +25,11 @@ $listAllKriteria = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['submit'])) {
 	$db->beginTransaction();
+/*
 	$sth = $db->prepare('INSERT INTO periode(nama) VALUES(?)');
 	$sth->execute(array($_POST['nama_periode']));
 	$periodeId = $db->lastInsertId();
+*/
 	foreach($_POST['bobot'] as $kriteria_id => $kriteria){
 		foreach($kriteria as $pembanding_id => $nilai){
 			$sth = $db->prepare('INSERT INTO bobot(
@@ -151,10 +158,12 @@ if(isset($_POST['submit'])) {
 		<table>
 			<tr>
 				<td valign="center" class="name">
-					<label for="Periode">Nama Periode</label>
+					<label for="Periode">Periode</label>
 				</td>
 				<td valign="top" class="value">
-					<input type="text" name="nama_periode"/>
+					<?php /*<input type="text" name="nama_periode"/>*/?>
+					<?php echo $periode['nama'] ?>
+
 				</td>
 			</tr>
 		</table>
