@@ -25,11 +25,6 @@ $listAllKriteria = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['submit'])) {
 	$db->beginTransaction();
-/*
-	$sth = $db->prepare('INSERT INTO periode(nama) VALUES(?)');
-	$sth->execute(array($_POST['nama_periode']));
-	$periodeId = $db->lastInsertId();
-*/
 	foreach($_POST['bobot'] as $kriteria_id => $kriteria){
 		foreach($kriteria as $pembanding_id => $nilai){
 			$sth = $db->prepare('INSERT INTO bobot(
@@ -331,9 +326,6 @@ var hitung_ahp = function(kriteria_id, parent_id) {
 			hitung_jumlah(arr[1], parent_id);
 		});
 	});
-};
-var penyesuaian_bobot = function(kriteria_id) {
-
 };
 window.addEvent('domready',function(){
 	<?php echo json_encode($listAllKriteria)?>.each(function(kriteria){
