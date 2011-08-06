@@ -21,12 +21,12 @@ $listPeriode = $statement->fetchAll(PDO::FETCH_ASSOC);
     <h1 align="center">Tabel Periode Kerja</h1>
 	<div class="list" align="center">
 		<table align="center">
-
+&nbsp;
 			<thead>
-				<tr class="prop">
+				<tr>
 					<th valign="top" class="name">No</th>
 					<th valign="top" class="name">Nama</th>
-					<th class="name">&nbsp;</th>
+					<th class="name">Action</th>
 				</tr>
 			</thead>
 			 <tbody border='1' align="center">
@@ -46,8 +46,8 @@ $listPeriode = $statement->fetchAll(PDO::FETCH_ASSOC);
 			</tbody>
 		</table>
 	</div>
-
+&nbsp;
 	<div class="body">
-		<span class="menuButton"><a href="pembobotan_add.php" class="create">Pembobotan</a></span>
+		<span class="menuButton"><a href="periode_add.php" class="create">Tambah Periode</a></span>
 	</div>
 </div>

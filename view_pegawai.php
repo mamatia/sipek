@@ -20,9 +20,9 @@ $hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
 <div class="body" align="center">
     <h1 align="center">Tabel Pegawai</h1>
 &nbsp;
+
        <div class="list" align="center">
             <table align="center">
-
                 <thead>
                     <tr>
                         <th valign="top" class="name">No</th>

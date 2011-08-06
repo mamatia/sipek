@@ -139,7 +139,8 @@ if(isset($_POST['submit'])) {
 		$sth = $db->prepare('INSERT INTO kti(periode_id, kriteria_id, nilai) values(?, ?, ?)');
 		$sth->execute(array($periodeId, $kriteria['id'], $nilai));
 	}
-
+	$sth = $db->prepare('UPDATE periode set terisi_bobot = 1 where id = ?');
+	$sth->execute(array($periodeId));
 	$saved = true;
 	$db->commit();
 }

@@ -15,15 +15,12 @@ if($_SESSION['user']['is_admin'] == '0'){
 
 if(isset($_GET['submit'])) {
     $sth = $db->prepare("select * from anggaran where periode_id = ?");
-    $sth->execute(array());
+    $sth->execute(array($_GET['periode_id']));
+} else {
+	$sth = $db->prepare("select * from anggaran");
+	$sth->execute();
 }
-
-
-$query = "select * from anggaran";
-
-$statement = $db->prepare($query);
-$statement->execute();
-$hasil = $statement->fetchAll(PDO::FETCH_ASSOC);
+$hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <?php include 'header.php'?>

@@ -16,18 +16,18 @@ $sth->execute();
 $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 if(isset($_POST['submit'])) {
-	$sth = $db->prepare("SELECT * FROM  pegawai where nip = ?");
-	$sth->execute(array($_POST['nip']));
-	$pegawai = $sth->fetch(PDO::FETCH_ASSOC);
+//	$sth = $db->prepare("SELECT * FROM  pegawai where nip = ?");
+//	$sth->execute(array($_POST['nip']));
+//	$pegawai = $sth->fetch(PDO::FETCH_ASSOC);
     $sth = $db->prepare("INSERT INTO presensi(
-                                        pegawai_id,
+                                        nip,
                                         jumlah_hadir,
                                         jumlah_sakit,
                                         jumlah_izin,
 										jumlah_tanpa_keterangan,
 										periode_id)
                                     values(?, ?, ?, ?, ?, ?)");
-    $sth->execute(array($pegawai['id'],$_POST['jumlah_hadir'],$_POST['jumlah_sakit'],$_POST['jumlah_izin'],$_POST['jumlah_tanpa_keterangan'],$_POST['periode_id']));
+    $sth->execute(array($_POST['nip'],$_POST['jumlah_hadir'],$_POST['jumlah_sakit'],$_POST['jumlah_izin'],$_POST['jumlah_tanpa_keterangan'],$_POST['periode_id']));
 	$saved=true;
 }
 
