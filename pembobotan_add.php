@@ -56,7 +56,7 @@ if(isset($_POST['submit'])) {
 				$sth->execute(array($periodeId));
 				$nilai = $sth->fetchColumn();
 				break;
-			case 2: // pelanggan
+			case 13: // Tingkat Pelayanan Publik
 				$sth = $db->prepare('SELECT COUNT(*)
 						FROM program_kerja
 						WHERE periode_id = ?
@@ -70,7 +70,11 @@ if(isset($_POST['submit'])) {
 						AND jenis_pelayanan_id IN (1,2)');
 				$sth->execute(array($periodeId));
 				$jumlah_semua = $sth->fetchColumn();
-				$nilai = (float) $jumlah_selesai / (float) $jumlah_semua;
+				if($jumlah_semua == 0) {
+					$nilai = 0;
+				} else {
+					$nilai = (float) $jumlah_selesai / (float) $jumlah_semua;
+				}
 				break;
 			case 8: // kepuasan kerja pegawai
 				$sth = $db->prepare('SELECT AVG(jumlah_hadir)
@@ -82,7 +86,11 @@ if(isset($_POST['submit'])) {
 						WHERE periode_id = ?');
 				$sth->execute(array($periodeId));
 				$total_hadir = $sth->fetchColumn();
-				$nilai = (float) $avg_hadir / (float) $total_hadir;
+				if ($total_hadir == 0) {
+					$nilai = 0;
+				} else {
+					$nilai = (float) $avg_hadir / (float) $total_hadir;
+				}
 				break;
 			case 9: // 	Peningkatan Kualitas Pegawai
 				$sth = $db->prepare('SELECT COUNT(*)
@@ -96,7 +104,11 @@ if(isset($_POST['submit'])) {
 						WHERE periode_id = ?');
 				$sth->execute(array($periodeId));
 				$jumlah_semua = $sth->fetchColumn();
-				$nilai = (float) $jumlah_selesai / (float) $jumlah_semua;
+				if ($jumlah_semua == 0) {
+					$nilai = 0;
+				} else {
+					$nilai = (float) $jumlah_selesai / (float) $jumlah_semua;
+				}
 				break;
 			case 10: //	Kualitas sarana prasarana
 				$sth = $db->prepare('SELECT SUM(jumlah)
@@ -109,7 +121,11 @@ if(isset($_POST['submit'])) {
 						WHERE periode_id = ?');
 				$sth->execute(array($periodeId));
 				$jumlah_semua = $sth->fetchColumn();
-				$nilai = (float) $jumlah_baik / (float) $jumlah_semua;
+				if ($jumlah_semua == 0) {
+					$nilai = 0;
+				} else {
+					$nilai = (float) $jumlah_baik / (float) $jumlah_semua;
+				}
 				break;
 			case 11: //	Kualitas SDM
 				$sth = $db->prepare('SELECT COUNT(*) FROM penugasan WHERE periode_id = ?');
@@ -128,10 +144,14 @@ if(isset($_POST['submit'])) {
 						WHERE periode_id = ?');
 				$sth->execute(array($periodeId));
 				$jumlah_pertemuan = $sth->fetchColumn();
-				$nilai = (float) $jumlah_selesai / (float) $jumlah_pertemuan;
+				if ($jumlah_pertemuan == 0) {
+					$nilai = 0;
+				} else {
+					$nilai = (float) $jumlah_selesai / (float) $jumlah_pertemuan;
+				}
 				break;
 		}
-		$sth = $db->prepare('INSERT INTO kti(periode_id, kriteria_id, nilai) values(?, ?, ?)');
+		$sth = $db->prepare('INSERT INTO kpi(periode_id, kriteria_id, nilai) values(?, ?, ?)');
 		$sth->execute(array($periodeId, $kriteria['id'], $nilai));
 	}
 	$sth = $db->prepare('UPDATE periode set terisi_bobot = 1 where id = ?');
@@ -157,9 +177,7 @@ if(isset($_POST['submit'])) {
 					<label for="Periode">Periode</label>
 				</td>
 				<td valign="top" class="value">
-					<?php /*<input type="text" name="nama_periode"/>*/?>
 					<?php echo $periode['nama'] ?>
-
 				</td>
 			</tr>
 		</table>
@@ -299,7 +317,6 @@ var hitung_jumlah = function(kriteria_id, parent_id) {
 			if (parent_id != 0) {
 				var bobot_parent = document.id('bobot_kriteria_' + parent_id).get('value').toFloat();
 			}
-
 			document.id('bobot_kriteria_' + kriteria_id).set('value', ((new_jumlah / total) * bobot_parent).round(2));
 			document.id('bobot_kriteria_display_' + kriteria_id).set('html', ((new_jumlah / total) * bobot_parent).round(2));
 			return total.round(2);

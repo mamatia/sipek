@@ -40,6 +40,8 @@ $listPeriode = $statement->fetchAll(PDO::FETCH_ASSOC);
 						<?php else:?>
 							<span class="menuButton"><a href="pembobotan_add.php?periode_id=<?php echo $periode['id'] ?>" class="create">Isi pembobot</a></span>
 						<?php endif ?>
+						<a onclick="return confirm('Anda yakin?')" href="pembobotan_empty.php?periode_id=<?php echo $periode['id']?>"><img src="images/skin/empty.png" title="Kosongkan"/></a>
+						<a onclick="return confirm('Menghapus Periode akan menghapus semua data yang berhubungan dengan periode, anda yakin?')" href="periode_delete.php?periode_id=<?php echo $periode['id']?>"><img src="images/skin/action_destroy.png" title="Hapus"/></a>
 					</td>
 				</tr>
 				<?php endforeach ?>
