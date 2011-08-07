@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 07, 2011 at 11:14 AM
+-- Generation Time: Aug 07, 2011 at 02:20 PM
 -- Server version: 5.1.56
 -- PHP Version: 5.3.6-pl0-gentoo
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `anggaran` (
 -- Dumping data for table `anggaran`
 --
 
-INSERT IGNORE INTO `anggaran` (`id`, `sumber`, `jumlah`, `tanggal_terima`, `periode_id`) VALUES
+INSERT INTO `anggaran` (`id`, `sumber`, `jumlah`, `tanggal_terima`, `periode_id`) VALUES
 (4, '7600000000', 7600000000, '2010-01-07', 1),
 (5, 'pemprov jabar', 500000000, '2010-02-02', 1),
 (6, 'pemprov jabar', 10000000000, '2010-04-08', 1);
@@ -70,20 +70,20 @@ CREATE TABLE IF NOT EXISTS `bobot` (
 -- Dumping data for table `bobot`
 --
 
-INSERT IGNORE INTO `bobot` (`kriteria_id`, `kriteria_pembanding_id`, `nilai`, `periode_id`) VALUES
-(1, 2, 1, 1),
+INSERT INTO `bobot` (`kriteria_id`, `kriteria_pembanding_id`, `nilai`, `periode_id`) VALUES
+(1, 2, 8, 1),
 (1, 2, 1, 2),
-(1, 3, 1, 1),
+(1, 3, 3, 1),
 (1, 3, 1, 2),
 (1, 4, 1, 1),
 (1, 4, 1, 2),
-(2, 1, 1, 1),
+(2, 1, 0.13, 1),
 (2, 1, 1, 2),
 (2, 3, 1, 1),
 (2, 3, 1, 2),
 (2, 4, 1, 1),
 (2, 4, 1, 2),
-(3, 1, 1, 1),
+(3, 1, 0.33, 1),
 (3, 1, 1, 2),
 (3, 2, 1, 1),
 (3, 2, 1, 2),
@@ -101,19 +101,19 @@ INSERT IGNORE INTO `bobot` (`kriteria_id`, `kriteria_pembanding_id`, `nilai`, `p
 (7, 5, 1, 2),
 (8, 9, 1, 1),
 (8, 9, 1, 2),
-(8, 10, 1, 1),
+(8, 10, 8, 1),
 (8, 10, 1, 2),
 (9, 8, 1, 1),
 (9, 8, 1, 2),
 (9, 10, 1, 1),
 (9, 10, 1, 2),
-(10, 8, 1, 1),
+(10, 8, 0.13, 1),
 (10, 8, 1, 2),
 (10, 9, 1, 1),
 (10, 9, 1, 2),
-(11, 12, 1, 1),
+(11, 12, 2, 1),
 (11, 12, 1, 2),
-(12, 11, 1, 1),
+(12, 11, 0.5, 1),
 (12, 11, 1, 2);
 
 -- --------------------------------------------------------
@@ -131,25 +131,13 @@ CREATE TABLE IF NOT EXISTS `bobot_kriteria` (
   PRIMARY KEY (`id`),
   KEY `kriteria_id` (`kriteria_id`),
   KEY `periode_id` (`periode_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=61 ;
 
 --
 -- Dumping data for table `bobot_kriteria`
 --
 
-INSERT IGNORE INTO `bobot_kriteria` (`id`, `kriteria_id`, `periode_id`, `nilai`) VALUES
-(13, 1, 1, 0.25),
-(14, 2, 1, 0.25),
-(15, 3, 1, 0.25),
-(16, 4, 1, 0.25),
-(17, 5, 1, 0.13),
-(18, 7, 1, 0.13),
-(19, 13, 1, 0.25),
-(20, 8, 1, 0.08),
-(21, 9, 1, 0.08),
-(22, 10, 1, 0.08),
-(23, 11, 1, 0.13),
-(24, 12, 1, 0.13),
+INSERT INTO `bobot_kriteria` (`id`, `kriteria_id`, `periode_id`, `nilai`) VALUES
 (25, 1, 2, 0.25),
 (26, 2, 2, 0.25),
 (27, 3, 2, 0.25),
@@ -161,7 +149,19 @@ INSERT IGNORE INTO `bobot_kriteria` (`id`, `kriteria_id`, `periode_id`, `nilai`)
 (33, 9, 2, 0.08),
 (34, 10, 2, 0.08),
 (35, 11, 2, 0.13),
-(36, 12, 2, 0.13);
+(36, 12, 2, 0.13),
+(49, 1, 1, 0.54),
+(50, 2, 1, 0.14),
+(51, 3, 1, 0.14),
+(52, 4, 1, 0.26),
+(53, 5, 1, 0.57),
+(54, 7, 1, 0.5),
+(55, 13, 1, 1),
+(56, 8, 1, 0.63),
+(57, 9, 1, 0.33),
+(58, 10, 1, 0.14),
+(59, 11, 1, 0.69),
+(60, 12, 1, 0.33);
 
 -- --------------------------------------------------------
 
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `inventaris` (
 -- Dumping data for table `inventaris`
 --
 
-INSERT IGNORE INTO `inventaris` (`id`, `jenis`, `jumlah`, `kondisi`, `periode_id`) VALUES
+INSERT INTO `inventaris` (`id`, `jenis`, `jumlah`, `kondisi`, `periode_id`) VALUES
 (8, 'Modem ADSL Backup', 5, 'Baik', 1),
 (9, 'Serveer Mirror', 2, 'Cukup', 1);
 
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `jenis_pelayanan` (
 -- Dumping data for table `jenis_pelayanan`
 --
 
-INSERT IGNORE INTO `jenis_pelayanan` (`id`, `nama`) VALUES
+INSERT INTO `jenis_pelayanan` (`id`, `nama`) VALUES
 (1, 'Perencanaan, pengendalian, dan pembangunan daerah'),
 (2, 'Pengembangan komunikasi, informasi, media massa, dan pemanfaatan TI'),
 (3, 'Peningkatan kapasitas sumber daya aparatur'),
@@ -227,25 +227,13 @@ CREATE TABLE IF NOT EXISTS `kpi` (
   PRIMARY KEY (`id`),
   KEY `periode_id` (`periode_id`),
   KEY `kriteria_id` (`kriteria_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=61 ;
 
 --
 -- Dumping data for table `kpi`
 --
 
-INSERT IGNORE INTO `kpi` (`id`, `kriteria_id`, `periode_id`, `nilai`) VALUES
-(13, 1, 1, NULL),
-(14, 2, 1, NULL),
-(15, 3, 1, NULL),
-(16, 4, 1, NULL),
-(17, 5, 1, 18100000000),
-(18, 7, 1, 1),
-(19, 13, 1, 0.5),
-(20, 8, 1, 0.97291666666667),
-(21, 9, 1, 0.5),
-(22, 10, 1, 1),
-(23, 11, 1, 0),
-(24, 12, 1, 0),
+INSERT INTO `kpi` (`id`, `kriteria_id`, `periode_id`, `nilai`) VALUES
 (25, 1, 2, NULL),
 (26, 2, 2, NULL),
 (27, 3, 2, NULL),
@@ -257,7 +245,19 @@ INSERT IGNORE INTO `kpi` (`id`, `kriteria_id`, `periode_id`, `nilai`) VALUES
 (33, 9, 2, 0),
 (34, 10, 2, 0),
 (35, 11, 2, 0),
-(36, 12, 2, 0);
+(36, 12, 2, 0),
+(49, 1, 1, NULL),
+(50, 2, 1, NULL),
+(51, 3, 1, NULL),
+(52, 4, 1, NULL),
+(53, 5, 1, 18100000000),
+(54, 7, 1, 1),
+(55, 13, 1, 0.5),
+(56, 8, 1, 0.97291666666667),
+(57, 9, 1, 0.5),
+(58, 10, 1, 1),
+(59, 11, 1, 0),
+(60, 12, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -278,7 +278,7 @@ CREATE TABLE IF NOT EXISTS `kriteria` (
 -- Dumping data for table `kriteria`
 --
 
-INSERT IGNORE INTO `kriteria` (`id`, `nama`, `parent_id`) VALUES
+INSERT INTO `kriteria` (`id`, `nama`, `parent_id`) VALUES
 (1, 'Finansial', NULL),
 (2, 'Pelanggan', NULL),
 (3, 'Internal Bisnis', NULL),
@@ -314,7 +314,7 @@ CREATE TABLE IF NOT EXISTS `pegawai` (
 -- Dumping data for table `pegawai`
 --
 
-INSERT IGNORE INTO `pegawai` (`id`, `nip`, `nama`, `jabatan`, `golongan`, `pend_formal`, `status`) VALUES
+INSERT INTO `pegawai` (`id`, `nip`, `nama`, `jabatan`, `golongan`, `pend_formal`, `status`) VALUES
 (4, '123456', 'mamat', 'bendahara', 'III A', 'S1 Ilmu Komunikasi', 'aktif'),
 (5, '123333', 'ijong', 'kepala divisi komunikasi', 'IV A', 'S1 Ilmu Komunikasi', 'aktif'),
 (6, '1347888', 'agus', 'kepala dinas', 'IV B', 's2 Ilmu komputer', 'aktif'),
@@ -354,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `periode` (
 -- Dumping data for table `periode`
 --
 
-INSERT IGNORE INTO `periode` (`id`, `nama`, `terisi_bobot`) VALUES
+INSERT INTO `periode` (`id`, `nama`, `terisi_bobot`) VALUES
 (1, 2010, 1),
 (2, 2011, 1);
 
@@ -399,7 +399,7 @@ CREATE TABLE IF NOT EXISTS `presensi` (
 -- Dumping data for table `presensi`
 --
 
-INSERT IGNORE INTO `presensi` (`id`, `periode_id`, `nip`, `jumlah_hadir`, `jumlah_sakit`, `jumlah_izin`, `jumlah_tanpa_keterangan`) VALUES
+INSERT INTO `presensi` (`id`, `periode_id`, `nip`, `jumlah_hadir`, `jumlah_sakit`, `jumlah_izin`, `jumlah_tanpa_keterangan`) VALUES
 (1, 1, '123456', 234, 3, 2, 1),
 (2, 1, '123333', 233, 3, 3, 0);
 
@@ -430,7 +430,7 @@ CREATE TABLE IF NOT EXISTS `program_kerja` (
 -- Dumping data for table `program_kerja`
 --
 
-INSERT IGNORE INTO `program_kerja` (`id`, `nama`, `jenis_pelayanan_id`, `target_anggaran`, `tanggal_mulai`, `tanggal_target_selesai`, `riil_tanggal_selesai`, `riil_anggaran`, `periode_id`, `selesai`) VALUES
+INSERT INTO `program_kerja` (`id`, `nama`, `jenis_pelayanan_id`, `target_anggaran`, `tanggal_mulai`, `tanggal_target_selesai`, `riil_tanggal_selesai`, `riil_anggaran`, `periode_id`, `selesai`) VALUES
 (7, 'Penyusunan RIP Postel', 1, 150000000, '2010-03-07', '2010-03-07', '2010-03-07', 150000000, 1, 1),
 (8, 'penyusunan rancangan peraturan daerah kominfo', 1, 150000000, '2010-04-07', '2010-04-07', '2010-04-07', 150000000, 1, 0);
 
@@ -454,7 +454,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT IGNORE INTO `user` (`id`, `username`, `password`, `pegawai_id`, `is_admin`) VALUES
+INSERT INTO `user` (`id`, `username`, `password`, `pegawai_id`, `is_admin`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0, 0),
 (2, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 0, 1);
 
