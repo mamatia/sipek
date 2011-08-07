@@ -277,8 +277,8 @@ if(isset($_POST['submit'])) {
 						</td>
 						<?php endforeach ?>
 						<td id="jumlah_<?php echo $baris['id']?>" class="jumlah_<?php echo $baris['id']?>"><?php echo count($listChild) ?></td>
-						<td id="bobot_kriteria_display_<?php echo $baris['id']?>" class="bobot_kriteria_<?php echo $baris['id']?>"> <?php echo round(1/count($listKriteria) * 1 / count($listChild),2)?></td>
-						<input  id="bobot_kriteria_<?php echo $baris['id']?>" type="hidden" name="bobot_kriteria[<?php echo $baris['id']?>]" value="<?php echo round(1/count($listKriteria) * 1 / count($listChild),2)?>"/>
+						<td id="bobot_kriteria_display_<?php echo $baris['id']?>" class="bobot_kriteria_<?php echo $baris['id']?>"> <?php echo round(1 / count($listChild),2)?></td>
+						<input  id="bobot_kriteria_<?php echo $baris['id']?>" type="hidden" name="bobot_kriteria[<?php echo $baris['id']?>]" value="<?php echo round(1 / count($listChild),2)?>"/>
 					</tr>
 					<?php endforeach ?>
 					<tr>
@@ -317,8 +317,8 @@ var hitung_jumlah = function(kriteria_id, parent_id) {
 			if (parent_id != 0) {
 				var bobot_parent = document.id('bobot_kriteria_' + parent_id).get('value').toFloat();
 			}
-			document.id('bobot_kriteria_' + kriteria_id).set('value', ((new_jumlah / total) * bobot_parent).round(2));
-			document.id('bobot_kriteria_display_' + kriteria_id).set('html', ((new_jumlah / total) * bobot_parent).round(2));
+			document.id('bobot_kriteria_' + kriteria_id).set('value', ((new_jumlah / total)).round(2));
+			document.id('bobot_kriteria_display_' + kriteria_id).set('html', ((new_jumlah / total)).round(2));
 			return total.round(2);
 		})());
 		return new_jumlah;
