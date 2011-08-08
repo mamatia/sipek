@@ -1,8 +1,7 @@
 <?php
 session_start();
 include 'connect.php';
-$sth = $db->prepare('
-		SELECT
+$sql = 'SELECT
 		parent_kriteria.id parent_id,
 		parent_kriteria.nama parent_name,
 		child_kriteria.id child_id,
@@ -15,10 +14,18 @@ $sth = $db->prepare('
 		LEFT JOIN kriteria child_kriteria ON child_kriteria.parent_id = parent_kriteria.id
 		LEFT JOIN kpi ON kpi.kriteria_id = child_kriteria.id
 		LEFT JOIN bobot_kriteria ON bobot_kriteria.kriteria_id = child_kriteria.id
-		WHERE kpi.`periode_id` = ? AND bobot_kriteria.periode_id = ?
-');
-$sth->execute(array($_GET['periode_id'],$_GET['periode_id']));
-$listKriteria = $sth->fetchAll (PDO::FETCH_ASSOC);
+		WHERE kpi.periode_id = ? AND bobot_kriteria.periode_id = ?';
+$sthPresent = $db->prepare($sql);
+$sthPresent->execute(array($_GET['periode_id'],$_GET['periode_id']));
+$listKriteria = $sthPresent->fetchAll (PDO::FETCH_ASSOC);
+
+$sthPeriode = $db->prepare('SELECT id FROM periode WHERE id < ? ORDER BY id DESC');
+$sthPeriode->execute(array($_GET['periode_id']));
+$periodeBeforeId = $sthPeriode->fetchColumn();
+
+$sthBefore = $db->prepare($sql);
+$sthBefore->execute(array($periodeBeforeId, $periodeBeforeId));
+$listKriteriaBefore = $sthBefore->fetchAll(PDO::FETCH_ASSOC);
 
 $sth = $db->prepare("SELECT * FROM  periode");
 $sth->execute();
@@ -66,8 +73,26 @@ $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 				<td><?php echo $kriteria['parent_name']?></td>
 				<td><?php echo $kriteria['child_name']?></td>
 				<td><?php echo $kriteria['bobot']?></td>
-				<td><?php echo $kriteria['hasil']?></td>
-				<td>&nbsp;</td>
+				<td>
+					<?php if ($kriteria['child_id'] == 5):?>
+						Rp. <?php echo number_format((float)$kriteria['hasil'],2,',','.')?>
+					<?php elseif($kriteria['child_id'] == 11):?>
+						<?php echo $kriteria['hasil']?>
+					<?php else:?>
+						<?php echo round($kriteria['hasil'],2) * 100?>%
+					<?php endif?>
+				</td>
+				<td>
+					<?php if(isset($listKriteriaBefore[$i])):?>
+						<?php if($kriteria['hasil'] > $listKriteriaBefore[$i]['hasil']):?>
+						Naik dari periode sebelumnya
+						<?php elseif ($kriteria['hasil'] == $listKriteriaBefore[$i]['hasil']):?>
+						Sama dari periode sebelumnya
+						<?php else:?>
+						Turun dari periode sebelumnya
+						<?php endif?>
+					<?php endif?>
+				</td>
 			</tr>
 			<?php endforeach?>
 		</tbody>
