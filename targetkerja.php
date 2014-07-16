@@ -11,11 +11,15 @@ $sth = $db->prepare("SELECT * FROM  periode");
 $sth->execute();
 $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-$nama_bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+$nama_bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
-
-if($_SESSION['pengguna']['is_admin'] == '0'){
+$sth = $db->prepare("SELECT * FROM  jenis_pelayanan");
+$sth->execute();
+$listjenispelayanan = $sth->fetchAll(PDO::FETCH_ASSOC);
+		
+		
+if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
 
@@ -28,9 +32,10 @@ if(isset($_POST['submit'])) {
 										tanggal_mulai,
 										tanggal_target_selesai,
 										riil_tanggal_selesai,
+										jenis_pelayanan_id,
                                         periode_id)
-                                    values(?, ?, ?, ?, ?, ?, ?)");
-    $sth->execute(array($_POST['nama'],$_POST['target_anggaran'],$_POST['riil_anggaran'],$date,$date,$date,$_POST['periode_id']));
+                                    values(?, ?, ?, ?, ?, ?, ?, ?)");
+    $sth->execute(array($_POST['nama'],$_POST['target_anggaran'],$_POST['riil_anggaran'],$date,$date,$date,$_POST['jenis_pelayanan_id'],$_POST['periode_id']));
 	$saved=true;
 }
 
@@ -50,16 +55,27 @@ if(isset($_POST['submit'])) {
         <div class="dialog" align="center">
             <table align="center">
                 <tbody align="center">
-                
+
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="nama">Nama:</label>
                         </td>
                         <td valign="top" class="value ">
                             <input type="text" name="nama" value="" id="nama" />
-
                         </td>
-                    </tr> 
+                    </tr>
+					<tr>
+					<td valign="top" class="name">
+                            <label for="Periode">Jenis Pelayanan</label>
+                        </td>
+					<td valign="top" class="value">
+                            <select name="jenis_pelayanan_id">
+                                <?php foreach($listjenispelayanan as $jenispelayanan):?>
+                                <option value="<?php echo $jenispelayanan['id'] ?>"><?php echo $jenispelayanan['nama']?></option>
+                                <?php endforeach?>
+                            </select>
+                        </td>
+					</tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="instansi">Target Anggaran:</label>
@@ -68,7 +84,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="target_anggaran" value="" id="instansi" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="keperluan">Riil Anggaran:</label>
@@ -76,14 +92,14 @@ if(isset($_POST['submit'])) {
 						<td valign="top" class="value ">
                             <input type="text" name="riil_anggaran" value="" id="instansi" />
                         </td>
-                    </tr>    
+                    </tr>
 					<tr>
 					<tr class="prop">
 						<td valign="top" class="name">
 							<label for="tanggal_mulai">Tanggal Mulai:</label>
 						</td>
 					<td valign="top" class="name">
-						
+
 						<select name="hari">
 							<?php for($h = 1; $h <= 31; $h++):?>
 								<?php $selected = ($h == date('d'))?'selected="selected"':''?>
@@ -111,7 +127,7 @@ if(isset($_POST['submit'])) {
 							<?php endfor ?>
 						</select>
 					</tr>
-					
+
 					<tr>
 					<tr class="prop">
 						<td valign="top" class="name">
@@ -146,14 +162,14 @@ if(isset($_POST['submit'])) {
 						</select>
 					</td>
 					</tr>
-					
+
 					<tr>
 					<tr class="prop">
 						<td valign="top" class="name">
 							<label for="tanggal_mulai">Riil Tanggal Selesai :</label>
 						</td>
 					<td valign="top" class="name">
-						
+
 						<select name="hari">
 							<?php for($h = 1; $h <= 31; $h++):?>
 								<?php $selected = ($h == date('d'))?'selected="selected"':''?>

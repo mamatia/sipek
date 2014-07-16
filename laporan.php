@@ -5,28 +5,24 @@ if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
 
-$sth = $db->prepare("SELECT * FROM  periode");
-$sth->execute();
-$listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-if($_SESSION['user']['is_admin'] == '0'){
+if($_SESSION['user']['is_admin'] == '1'){
     header('Location:login.php');
 }
 
-if(isset($_GET['submit'])) {
-    $sth = $db->prepare("select * from anggaran where periode_id = ?");
-    $sth->execute(array($_GET['periode_id']));
-} else {
-	$sth = $db->prepare("select * from anggaran");
-	$sth->execute();
-}
-$hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+$sth = $db->prepare("SELECT * FROM  periode");
+$sth->execute();
+$listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
+
 <?php include 'header.php'?>
+
 &nbsp;
 <div class="body" align="center">
-    <h1 align="center">Tabel Anggaran</h1>
+    <h1 align="center">Tabel Program Kerja</h1>
+&nbsp;
+
 &nbsp;
 <form method="get">
 <table>
@@ -42,12 +38,13 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
             </select>
         </td>
 		<td>
-			<input type="submit" name="submit" value="filter"/>
+			<input type="submit" name="submit" value="Filter"/>
 		</td>
 	</tr>
-</table>
-			
+</table>	
 </form>
+&nbsp;
+
 &nbsp;
        <div class="list" align="center">
             <table align="center">
@@ -55,24 +52,31 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
                 <thead>
                     <tr>
                         <th valign="top" class="name">No</th>
-						<th valign="top" class="name">Sumber</th>
-						<th valign="top" class="name">Jumlah</th>
-						<th valign="top" class="name">Tanggal Terima</th>
+						<th valign="top" class="name">Perspektif</th>
+						<th valign="top" class="name">Sasaran Strategis</th>
+						<th valign="top" class="name">Bobot</th>
+						<th valign="top" class="name">Hasil</th>
                     </tr>
 				</thead>
 				<tbody align="center" border="1">
-					<?php $i= 1; foreach($hasil as $baris):?>
+					<?php $i= 1;?>
                     <tr>
 						<td><?php $i; echo $i++ ?></td>
-						<td><?php echo $baris['sumber']?></td>
-						<td><?php echo $baris['jumlah']?></td>
-						<td><?php echo $baris['tanggal_terima']?></td>
+						<td>Finansial</td>
+						<td>Anggaran Masuk</td>
+						<td>0.451</td>
+						<td>Rp.1.000.000.000</td>
 					</tr>
-					<?php endforeach ?>
+					<tr>
+						<td><?php $i; echo $i++ ?></td>
+						<td>Finansial</td>
+						<td>Efektivitas Anggaran</td>
+						<td>0.374</td>
+						<td>98%</td>
+					</tr>
                </tbody>
             </table>
         </div>
 &nbsp;
-		<div class="body">
-			<span class="menuButton"><a href="anggaran.php" class="create">Tambah Data</a></span>
-		</div>
+
+<?php include 'footer.php' ?>

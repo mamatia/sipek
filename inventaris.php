@@ -5,14 +5,14 @@ if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
 
-if($_SESSION['pengguna']['is_admin'] == '0'){
+if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
 
 $sth = $db->prepare("SELECT * FROM  periode");
 $sth->execute();
 $listPeriode = $sth->fetchAll(PDO::FETCH_ASSOC);
-	
+
 if(isset($_POST['submit'])) {
     $sth = $db->prepare("INSERT INTO inventaris(
                                         jenis,
@@ -39,7 +39,7 @@ if(isset($_POST['submit'])) {
         <div class="dialog" align="center">
             <table align="center">
                 <tbody align="center">
-                
+
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="nama">Jenis</label>
@@ -48,7 +48,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="jenis" value="" id="nama" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="instansi">Jumlah</label>
@@ -57,7 +57,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="jumlah" value="" id="instansi" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="kondisi">Kondisi</label>
@@ -69,7 +69,7 @@ if(isset($_POST['submit'])) {
 								<option>Buruk</option>
                             </select>
                         </td>
-                    </tr>    
+                    </tr>
 					<tr>
 					<td valign="top" class="name">
                             <label for="Periode">Periode</label>
@@ -81,7 +81,7 @@ if(isset($_POST['submit'])) {
                                 <?php endforeach?>
                             </select>
                         </td>
-					</tr>	
+					</tr>
                 </tbody>
             </table>
         </div>

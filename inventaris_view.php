@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 include 'connect.php';
 if(!isset($_SESSION['user'])){
@@ -14,10 +14,10 @@ if($_SESSION['user']['is_admin'] == '0'){
 }
 
 if(isset($_GET['submit'])) {
-    $sth = $db->prepare("select * from anggaran where periode_id = ?");
+    $sth = $db->prepare("select * from inventaris where periode_id = ?");
     $sth->execute(array($_GET['periode_id']));
 } else {
-	$sth = $db->prepare("select * from anggaran");
+	$sth = $db->prepare("select * from inventaris");
 	$sth->execute();
 }
 $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -26,7 +26,8 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
 <?php include 'header.php'?>
 &nbsp;
 <div class="body" align="center">
-    <h1 align="center">Tabel Anggaran</h1>
+    <h1 align="center">Tabel Inventaris</h1>
+&nbsp;
 &nbsp;
 <form method="get">
 <table>
@@ -45,28 +46,27 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
 			<input type="submit" name="submit" value="filter"/>
 		</td>
 	</tr>
-</table>
-			
+</table>	
 </form>
 &nbsp;
+
        <div class="list" align="center">
             <table align="center">
-
                 <thead>
                     <tr>
                         <th valign="top" class="name">No</th>
-						<th valign="top" class="name">Sumber</th>
+						<th valign="top" class="name">Jenis</th>
 						<th valign="top" class="name">Jumlah</th>
-						<th valign="top" class="name">Tanggal Terima</th>
+						<th valign="top" class="name">Kondisi</th>
                     </tr>
 				</thead>
 				<tbody align="center" border="1">
 					<?php $i= 1; foreach($hasil as $baris):?>
                     <tr>
 						<td><?php $i; echo $i++ ?></td>
-						<td><?php echo $baris['sumber']?></td>
+						<td><?php echo $baris['jenis']?></td>
 						<td><?php echo $baris['jumlah']?></td>
-						<td><?php echo $baris['tanggal_terima']?></td>
+						<td><?php echo $baris['kondisi']?></td>
 					</tr>
 					<?php endforeach ?>
                </tbody>
@@ -74,5 +74,5 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
         </div>
 &nbsp;
 		<div class="body">
-			<span class="menuButton"><a href="anggaran.php" class="create">Tambah Data</a></span>
+			<span class="menuButton"><a href="inventaris.php" class="create">Tambah Data</a></span>
 		</div>

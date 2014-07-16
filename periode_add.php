@@ -4,11 +4,11 @@ include 'connect.php';
 if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
-	
-if($_SESSION['pengguna']['is_admin'] == '1'){
+
+if($_SESSION['user']['is_admin'] == '1'){
     header('Location:login.php');
 }
-	
+
 if(isset($_POST['submit'])) {
     $sth = $db->prepare("INSERT INTO periode(
                                         nama)
@@ -30,7 +30,7 @@ if(isset($_POST['submit'])) {
         <div class="dialog" align="center">
             <table align="center">
                 <tbody align="center">
-                
+
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="nama">Nama</label>
@@ -39,7 +39,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="nama" value="" id="nama" />
 
                         </td>
-                    </tr> 
+                    </tr>
                 </tbody>
             </table>
         </div>

@@ -5,7 +5,7 @@ if(!isset($_SESSION['user'])){
     header('Location:login.php');
 }
 
-if($_SESSION['pengguna']['is_admin'] == '0'){
+if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
 
@@ -42,11 +42,11 @@ $listKriteria = $sth->fetchAll (PDO::FETCH_ASSOC);
 					<?php endforeach?>
 				</select>
 			</td>
-		</tr>	
+		</tr>
 	</table>
 	&nbsp;
 	<br><br>
-	
+
 <form method="post">
 <div class="dialog" align="center">
 <table border="0">
@@ -88,7 +88,7 @@ $listKriteria = $sth->fetchAll (PDO::FETCH_ASSOC);
 
 <br>
 <?php foreach($listKriteria as $parent):?>
-<?php 
+<?php
 $sth = $db->prepare("SELECT * FROM kriteria WHERE parent_id = :id");
 $sth->execute(array('id' => $parent['id']));
 $listChild = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -136,7 +136,7 @@ $listChild = $sth->fetchAll(PDO::FETCH_ASSOC);
 	</table>
 
 </div>
- 
+
 <?php endif ?>
 <?php endforeach ?>
 <div class="buttons" align="center">

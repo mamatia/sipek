@@ -13,11 +13,11 @@ $date = date('Y-m-d');
 
 
 
-$nama_bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+$nama_bulan = array("Januari", "Februari", "Maret", "April", "Mei", "Juni",
         "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
 
-if($_SESSION['pengguna']['is_admin'] == '0'){
+if($_SESSION['user']['is_admin'] == '0'){
     header('Location:login.php');
 }
 
@@ -48,7 +48,7 @@ if(isset($_POST['submit'])) {
         <div class="dialog" align="center">
             <table align="center">
                 <tbody align="center">
-                
+
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="nama">Sumber</label>
@@ -57,7 +57,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="sumber" value="" id="nama" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="instansi">Jumlah</label>
@@ -66,7 +66,7 @@ if(isset($_POST['submit'])) {
                             <input type="text" name="jumlah" value="" id="instansi" />
 
                         </td>
-                    </tr> 
+                    </tr>
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="keperluan">Tanggal Terima</label>
@@ -100,7 +100,7 @@ if(isset($_POST['submit'])) {
 						</select>
                         </td>
 
-                    </tr>    
+                    </tr>
 					<tr>
 					<td valign="top" class="name">
                             <label for="Periode">Periode</label>

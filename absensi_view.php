@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 include 'connect.php';
 if(!isset($_SESSION['user'])){
@@ -14,10 +14,10 @@ if($_SESSION['user']['is_admin'] == '0'){
 }
 
 if(isset($_GET['submit'])) {
-    $sth = $db->prepare("select * from anggaran where periode_id = ?");
+    $sth = $db->prepare("select * from presensi where periode_id = ?");
     $sth->execute(array($_GET['periode_id']));
 } else {
-	$sth = $db->prepare("select * from anggaran");
+	$sth = $db->prepare("select * from presensi");
 	$sth->execute();
 }
 $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -26,7 +26,7 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
 <?php include 'header.php'?>
 &nbsp;
 <div class="body" align="center">
-    <h1 align="center">Tabel Anggaran</h1>
+    <h1 align="center">Tabel Kehadiran Pegawai</h1>
 &nbsp;
 <form method="get">
 <table>
@@ -45,8 +45,7 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
 			<input type="submit" name="submit" value="filter"/>
 		</td>
 	</tr>
-</table>
-			
+</table>	
 </form>
 &nbsp;
        <div class="list" align="center">
@@ -55,18 +54,22 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
                 <thead>
                     <tr>
                         <th valign="top" class="name">No</th>
-						<th valign="top" class="name">Sumber</th>
-						<th valign="top" class="name">Jumlah</th>
-						<th valign="top" class="name">Tanggal Terima</th>
+						<th valign="top" class="name">NIP</th>
+						<th valign="top" class="name">Jumlah Hadir</th>
+						<th valign="top" class="name">Jumlah Sakit</th>
+						<th valign="top" class="name">Jumlah Izin</th>
+						<th valign="top" class="name">Jumlah Tanpa Keterangan</th>
                     </tr>
 				</thead>
 				<tbody align="center" border="1">
 					<?php $i= 1; foreach($hasil as $baris):?>
                     <tr>
 						<td><?php $i; echo $i++ ?></td>
-						<td><?php echo $baris['sumber']?></td>
-						<td><?php echo $baris['jumlah']?></td>
-						<td><?php echo $baris['tanggal_terima']?></td>
+						<td><?php echo $baris['nip']?></td>
+						<td><?php echo $baris['jumlah_hadir']?></td>
+						<td><?php echo $baris['jumlah_sakit']?></td>
+						<td><?php echo $baris['jumlah_izin']?></td>
+						<td><?php echo $baris['jumlah_tanpa_keterangan']?></td>
 					</tr>
 					<?php endforeach ?>
                </tbody>
@@ -74,5 +77,5 @@ $hasil = $sth->fetchAll(PDO::FETCH_ASSOC);
         </div>
 &nbsp;
 		<div class="body">
-			<span class="menuButton"><a href="anggaran.php" class="create">Tambah Data</a></span>
+			<span class="menuButton"><a href="absensi_pegawai.php" class="create">Tambah Data</a></span>
 		</div>
